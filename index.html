@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hapus Cookies</title>
+    <script>
+        function deleteAllCookies() {
+            const cookies = document.cookie.split(";");
+
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i];
+                const eqPos = cookie.indexOf("=");
+                const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+                document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+            }
+            alert("Semua cookies telah dihapus!");
+        }
+    </script>
+</head>
+<body>
+    <h1>Hapus Semua Cookies</h1>
+    <button onclick="deleteAllCookies()">Hapus Cookies</button>
+</body>
+</html>
