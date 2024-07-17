@@ -14,11 +14,21 @@ function clearCookies() {
 }
 
 function clearSiteData() {
-    if (navigator.storage && navigator.storage.clear) {
-        navigator.storage.clear().then(() => {
-            alert('Site data cleared!');
+    if (window.caches) {
+        // Clear caches
+        caches.keys().then(function(names) {
+            for (let name of names) caches.delete(name);
         });
-    } else {
-        alert('Clearing site data is not supported by your browser.');
     }
+
+    if ('serviceWorker' in navigator) {
+        // Unregister all service workers
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+            for (let registration of registrations) {
+                registration.unregister();
+            }
+        });
+    }
+
+    alert('Site data cleared!');
 }
