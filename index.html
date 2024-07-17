@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hapus Cookies dan Data Server</title>
+</head>
+<body>
+    <h1>Hapus Cookies dan Data Server</h1>
+    <button onclick="deleteCookiesAndServerData()">Hapus Data</button>
+
+    <script>
+        function deleteCookies() {
+            var cookies = document.cookie.split("; ");
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i];
+                var eqPos = cookie.indexOf("=");
+                var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+                document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+            }
+        }
+
+        function deleteServerData() {
+            fetch('/delete-server-data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ action: 'delete' })
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Data server berhasil dihapus');
+                } else {
+                    alert('Gagal menghapus data server');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan saat menghapus data server');
+            });
+        }
+
+        function deleteCookiesAndServerData() {
+            deleteCookies();
+            deleteServerData();
+            alert('Cookies berhasil dihapus');
+        }
+    </script>
+</body>
+</html>
